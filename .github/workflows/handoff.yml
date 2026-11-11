@@ -1,0 +1,22 @@
+name: Handoff Agent CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  handoff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write handoff log
+        run: |
+          echo "Release handover CI run started at $(date -u +%Y-%m-%dT%H:%M:%SZ)" > /tmp/handoff-summary.txt
+          echo "Prepared by: Hezi Liu (HeziLiu)" >> /tmp/handoff-summary.txt
+          echo "Account: mcpmark-eval-liuhezi/handoff-agent-ci" >> /tmp/handoff-summary.txt
+          echo "Purpose: capture handover of release duty into an artifact named handoff-summary" >> /tmp/handoff-summary.txt
+          echo "Run ID: see workflow run details on https://github.com/mcpmark-eval-liuhezi/handoff-agent-ci/actions" >> /tmp/handoff-summary.txt
+          cat /tmp/handoff-summary.txt
+      - name: Upload handoff-summary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: handoff-summary
+          path: /tmp/handoff-summary.txt
